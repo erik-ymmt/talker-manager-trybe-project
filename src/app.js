@@ -45,13 +45,18 @@ app.post('/login', validateEmail, verifyEmail, validatePassword, verifyPassword,
   res.status(200).json({ token });
 });
 
-app.post('/talker', validateToken, validateName, validateAge, validateTalk, validateRate, async (req, res) => {
-  const newTalker = req.body;
-  const currentTalkers = await readFile();
-  newTalker.id = currentTalkers.length + 1;
-  const updatedTalkers = [...currentTalkers, newTalker];
-  await writeFile(updatedTalkers);
-  res.status(201).json(newTalker);
+app.post('/talker',
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateRate, async (req, res) => {
+    const newTalker = req.body;
+    const currentTalkers = await readFile();
+    newTalker.id = currentTalkers.length + 1;
+    const updatedTalkers = [...currentTalkers, newTalker];
+    await writeFile(updatedTalkers);
+    res.status(201).json(newTalker);
 });
 
 module.exports = app;

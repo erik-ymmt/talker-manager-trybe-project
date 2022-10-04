@@ -14,6 +14,15 @@ const {
 const app = express();
 app.use(express.json());
 
+app.get('/talker/search', validateToken, async (req, res) => {
+  const { query } = req;
+  console.log(query);
+  const serchedTerm = (query.q).toLowerCase();
+  const talkers = await readFile();
+  const searchResult = talkers.filter((talker) => talker.name.toLowerCase().includes(serchedTerm));
+  res.status(200).json(searchResult);
+});
+
 app.get('/talker', async (_req, res) => {
   try {
     const talkers = await readFile();

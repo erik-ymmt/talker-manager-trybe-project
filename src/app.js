@@ -59,4 +59,20 @@ app.post('/talker',
     res.status(201).json(newTalker);
 });
 
+app.put('/talker/:id',
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateRate, async (req, res) => {
+    const { id } = req.params;
+    const newTalker = req.body;
+    const currentTalkers = await readFile();
+    const removeTalker = currentTalkers.filter((talker) => talker.id !== Number(id));
+    newTalker.id = Number(id);
+    const updatedTalkers = [...removeTalker, newTalker];
+    await writeFile(updatedTalkers);
+    res.status(200).json(newTalker);
+});
+
 module.exports = app;

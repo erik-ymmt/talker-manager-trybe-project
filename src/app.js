@@ -5,8 +5,8 @@ const {
   validateEmail, verifyEmail, validatePassword, verifyPassword, 
 } = require('./middlewares/loginValidation');
 const { 
-  verifyToken,
-  validateToken } = require('./middlewares/talkerValidation');
+  validateToken,
+  validateName } = require('./middlewares/talkerValidation');
 
 const app = express();
 app.use(express.json());
@@ -42,7 +42,7 @@ app.post('/login', validateEmail, verifyEmail, validatePassword, verifyPassword,
   res.status(200).json({ token });
 });
 
-app.post('/talker', verifyToken, validateToken, async (req, res) => {
+app.post('/talker', validateToken, validateName, async (req, res) => {
   const newTalker = req.body;
   const currentTalkers = await readFile();
   newTalker.id = currentTalkers.length + 1;

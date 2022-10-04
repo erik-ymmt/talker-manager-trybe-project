@@ -1,5 +1,5 @@
 const express = require('express');
-
+const generateToken = require('./auth/tokenGenerator');
 const readFile = require('./utils/fsUtils');
 
 const app = express();
@@ -27,6 +27,12 @@ app.get('/talker/:id', async (req, res) => {
     res.status(400).json(error);
     console.log(error);
   }
+});
+
+app.post('/login', (req, res) => {
+  const token = generateToken();
+  res.status(200).json({ token });
+  console.log(token);
 });
 
 module.exports = app;

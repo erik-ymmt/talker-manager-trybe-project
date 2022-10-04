@@ -1,7 +1,9 @@
 const express = require('express');
 const generateToken = require('./auth/tokenGenerator');
 const readFile = require('./utils/fsUtils');
-const { validateEmail, verifyEmail } = require('./middlewares/loginValidation');
+const { 
+  validateEmail, verifyEmail, validatePassword, verifyPassword, 
+} = require('./middlewares/loginValidation');
 
 const app = express();
 app.use(express.json());
@@ -31,7 +33,7 @@ app.get('/talker/:id', async (req, res) => {
   }
 });
 
-app.post('/login', validateEmail, verifyEmail, (req, res) => {
+app.post('/login', validateEmail, verifyEmail, validatePassword, verifyPassword, (req, res) => {
   const token = generateToken();
   res.status(200).json({ token });
   console.log(token);

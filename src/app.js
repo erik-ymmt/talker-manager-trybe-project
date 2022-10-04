@@ -75,4 +75,12 @@ app.put('/talker/:id',
     res.status(200).json(newTalker);
 });
 
+app.delete('/talker/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+  const currentTalkers = await readFile();
+  const removeTalker = currentTalkers.filter((talker) => talker.id !== Number(id));
+  await writeFile(removeTalker);
+  res.status(204).end();
+});
+
 module.exports = app;

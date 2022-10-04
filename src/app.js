@@ -1,6 +1,6 @@
 const express = require('express');
 const generateToken = require('./auth/tokenGenerator');
-const readFile = require('./utils/fsUtils');
+const { readFile, writeFile } = require('./utils/fsUtils');
 const { 
   validateEmail, verifyEmail, validatePassword, verifyPassword, 
 } = require('./middlewares/loginValidation');
@@ -36,7 +36,15 @@ app.get('/talker/:id', async (req, res) => {
 app.post('/login', validateEmail, verifyEmail, validatePassword, verifyPassword, (req, res) => {
   const token = generateToken();
   res.status(200).json({ token });
-  console.log(token);
+});
+
+app.post('/talker', async (req, res) => {
+  const newTalker = req.body;
+  const currentTalkers = await readFile();
+  newTalker.id = currentTalkers.length + 1;
+  const updatedTalkers = [...currentTalkers, newTalker];
+  await writeFile(updatedTalkers);
+  res.status(201).json(newTalker);
 });
 
 module.exports = app;

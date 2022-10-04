@@ -10,4 +10,13 @@ const readFile = async () => {
   }
 };
 
-module.exports = readFile;
+const writeFile = async (content) => {
+  try {
+    const cotnentToWrite = JSON.stringify(content);
+    fs.writeFile('./src/talker.json', cotnentToWrite);
+  } catch (error) {
+    console.log('error: could not write the file');
+  }
+};
+
+module.exports = { readFile, writeFile };

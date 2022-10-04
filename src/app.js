@@ -4,6 +4,9 @@ const { readFile, writeFile } = require('./utils/fsUtils');
 const { 
   validateEmail, verifyEmail, validatePassword, verifyPassword, 
 } = require('./middlewares/loginValidation');
+const { 
+  verifyToken,
+  validateToken } = require('./middlewares/talkerValidation');
 
 const app = express();
 app.use(express.json());
@@ -33,12 +36,13 @@ app.get('/talker/:id', async (req, res) => {
   }
 });
 
-app.post('/login', validateEmail, verifyEmail, validatePassword, verifyPassword, (req, res) => {
+app.post('/login', validateEmail, verifyEmail, validatePassword, verifyPassword, (_req, res) => {
   const token = generateToken();
+  console.log(token);
   res.status(200).json({ token });
 });
 
-app.post('/talker', async (req, res) => {
+app.post('/talker', verifyToken, validateToken, async (req, res) => {
   const newTalker = req.body;
   const currentTalkers = await readFile();
   newTalker.id = currentTalkers.length + 1;

@@ -6,7 +6,7 @@
 ## Files:
 &nbsp;&nbsp; Files developed by me:
 - everything on the /src folder.
-- Trybe's teams previously developed some files such as migration.sql and seed.sql.
+- Trybe's teams previously developed some files such as the __tests__ folder.
 
 ## Technologies:
 Technologies applied by me on this project:
